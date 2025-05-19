@@ -93,8 +93,8 @@ pub struct SeedCheckConnectAttempt {
 pub fn check_seeds(is_testnet: bool) -> Vec<SeedCheckResult> {
 	let mut result = vec![];
 	let (default_seeds, port) = match is_testnet {
-		true => (TESTNET_DNS_SEEDS, "13414"),
-		false => (MAINNET_DNS_SEEDS, "3414"),
+		true => (TESTNET_DNS_SEEDS, "23414"),
+		false => (MAINNET_DNS_SEEDS, "13414"),
 	};
 
 	if is_testnet {

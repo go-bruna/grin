@@ -212,6 +212,7 @@ pub fn get_genesis_block() -> Block {
 	match get_chain_type() {
 		ChainTypes::Mainnet => genesis::genesis_main(),
 		ChainTypes::Testnet => genesis::genesis_test(),
+		ChainTypes::UserTesting => genesis::genesis_user_testing(),
 		_ => genesis::genesis_dev(),
 	}
 }
@@ -419,7 +420,7 @@ pub fn min_wtema_graph_weight() -> u64 {
 pub fn max_block_weight() -> u64 {
 	match get_chain_type() {
 		ChainTypes::AutomatedTesting => TESTING_MAX_BLOCK_WEIGHT,
-		ChainTypes::UserTesting => TESTING_MAX_BLOCK_WEIGHT,
+		ChainTypes::UserTesting => MAX_BLOCK_WEIGHT,
 		ChainTypes::Testnet => MAX_BLOCK_WEIGHT,
 		ChainTypes::Mainnet => MAX_BLOCK_WEIGHT,
 	}

@@ -166,35 +166,8 @@ impl GlobalConfig {
 
 		match *chain_type {
 			global::ChainTypes::Mainnet => {}
-			global::ChainTypes::Testnet => {
-				defaults.api_http_addr = "127.0.0.1:13413".to_owned();
-				defaults.p2p_config.port = 13414;
-				defaults
-					.stratum_mining_config
-					.as_mut()
-					.unwrap()
-					.stratum_server_addr = Some("127.0.0.1:13416".to_owned());
-				defaults
-					.stratum_mining_config
-					.as_mut()
-					.unwrap()
-					.wallet_listener_url = "http://127.0.0.1:13415".to_owned();
-			}
-			global::ChainTypes::UserTesting => {
-				defaults.api_http_addr = "127.0.0.1:23413".to_owned();
-				defaults.p2p_config.port = 23414;
-				defaults.p2p_config.seeding_type = p2p::Seeding::None;
-				defaults
-					.stratum_mining_config
-					.as_mut()
-					.unwrap()
-					.stratum_server_addr = Some("127.0.0.1:23416".to_owned());
-				defaults
-					.stratum_mining_config
-					.as_mut()
-					.unwrap()
-					.wallet_listener_url = "http://127.0.0.1:23415".to_owned();
-			}
+			global::ChainTypes::Testnet => {}
+			global::ChainTypes::UserTesting => {}
 			global::ChainTypes::AutomatedTesting => {
 				panic!("Can't run automated testing directly");
 			}
