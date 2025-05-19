@@ -293,13 +293,8 @@ pub fn genesis_user_testing() -> core::Block {
 		output_mmr_size: 1,
 		kernel_mmr_size: 1,
 		pow: ProofOfWork {
-			total_difficulty: Difficulty::from_num(1),
-			secondary_scaling: 1856,
 			nonce: 0,
-			proof: Proof {
-				nonces: vec![0; global::USER_TESTING_PROOF_SIZE],
-				edge_bits: global::USER_TESTING_MIN_EDGE_BITS,
-			},
+			..Default::default()
 		},
 		..Default::default()
 	});
