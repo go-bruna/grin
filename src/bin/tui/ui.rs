@@ -98,7 +98,7 @@ impl UI {
 		let mut title_string = StyledString::new();
 		title_string.append(StyledString::styled(
 			format!(
-				"Grin Version {} [{:?}]",
+				"Echo Version {} [{:?}]",
 				built_info::PKG_VERSION,
 				global::get_chain_type()
 			),

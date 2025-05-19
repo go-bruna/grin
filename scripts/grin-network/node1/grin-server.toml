@@ -1,0 +1,38 @@
+[server]
+chain_type = "Mainnet"
+db_root = "grin_chain"
+api_http_addr = "45.90.13.109:3413"
+api_secret_path = ".api_secret"
+foreign_api_secret_path = ".foreign_api_secret"
+skip_sync_wait = true
+run_tui = false
+run_test_miner = true
+
+[server.p2p_config]
+host = "0.0.0.0"
+port = 3414
+seeding_type = "List"
+seeds = ["45.90.13.114:3415","45.90.13.116:3416","45.90.13.118:3417"]
+peer_max_inbound_count = 128
+peer_max_outbound_count = 8
+peer_min_preferred_outbound_count = 4
+
+[server.pool_config]
+accept_fee_base = 500000
+max_pool_size = 50000
+max_stempool_size = 50000
+
+[server.dandelion_config]
+epoch_secs = 600
+aggregation_secs = 30
+embargo_secs = 180
+stem_probability = 90
+always_stem_our_txs = true
+
+[server.stratum_mining_config]
+enable_stratum_server = true
+stratum_server_addr = "45.90.13.109:3416"
+attempt_time_per_block = 15
+minimum_share_difficulty = 1
+wallet_listener_url = "http://45.90.13.109:3415"
+burn_reward = false
