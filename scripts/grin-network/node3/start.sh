@@ -8,4 +8,4 @@ sleep 5
 
 # Check node status
 echo "Checking node status..."
-curl -s http://45.90.13.116:3415/v1/status
+curl -s http://45.90.13.116:3413/v1/status

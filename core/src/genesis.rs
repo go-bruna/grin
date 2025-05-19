@@ -157,7 +157,7 @@ pub fn genesis_test() -> core::Block {
 pub fn genesis_main() -> core::Block {
 	let gen = core::Block::with_header(core::BlockHeader {
 		height: 0,
-		timestamp: Utc.with_ymd_and_hms(2019, 1, 15, 16, 1, 26).unwrap(),
+		timestamp: Utc.with_ymd_and_hms(2025, 5, 19, 16, 1, 26).unwrap(),
 		prev_root: Hash::from_hex(
 			"0000000000000000002a8bc32f43277fe9c063b9c99ea252b483941dcd06e217",
 		)
@@ -183,7 +183,7 @@ pub fn genesis_main() -> core::Block {
 		pow: ProofOfWork {
 			total_difficulty: Difficulty::from_num(2_u64.pow(34)),
 			secondary_scaling: 1856,
-			nonce: 41,
+			nonce: 0,
 			proof: Proof {
 				nonces: vec![
 					4391451__, 36730677_, 38198400_, 38797304_, 60700446_, 72910191_, 73050441_,
