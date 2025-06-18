@@ -389,6 +389,16 @@ impl Handler {
 		b.header.pow.nonce = params.nonce;
 		b.header.pow.proof.nonces = params.pow;
 
+		info!(
+			"(Server ID: {}) Got share at height {}, hash {}, edge_bits {}, nonce {}, job_id {} ",
+			self.id,
+			b.header.height,
+			b.hash(),
+			b.header.pow.proof.edge_bits,
+			b.header.pow.nonce,
+			params.job_id,
+		);
+
 		if !b.header.pow.is_primary() && !b.header.pow.is_secondary() {
 			// Return error status
 			error!(
