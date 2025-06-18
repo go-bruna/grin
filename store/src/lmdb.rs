@@ -243,7 +243,7 @@ impl Store {
 			&lmdb::DatabaseOptions::new(lmdb::db::CREATE),
 		)?));
 
-		info!(
+		warn!(
 			"Resized database from {} to {}",
 			env_info.mapsize, new_mapsize
 		);

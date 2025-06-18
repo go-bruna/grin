@@ -244,7 +244,7 @@ pub fn init_logger(config: Option<LoggingConfig>, logs_tx: Option<mpsc::SyncSend
 
 		let _ = log4rs::init_config(config).unwrap();
 
-		info!(
+		warn!(
 			"log4rs is initialized, file level: {:?}, stdout level: {:?}, min. level: {:?}",
 			level_file, level_stdout, level_minimum
 		);
@@ -301,7 +301,7 @@ pub fn init_test_logger() {
 
 	let _ = log4rs::init_config(config).unwrap();
 
-	info!(
+	warn!(
 		"log4rs is initialized, stdout level: {:?}, min. level: {:?}",
 		level_stdout, level_minimum
 	);

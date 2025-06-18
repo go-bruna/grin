@@ -132,7 +132,7 @@ impl StateSync {
 				if let SyncStatus::TxHashsetDownload { .. } = self.sync_state.status() {
 					if !peer.is_connected() {
 						sync_need_restart = true;
-						info!(
+						warn!(
 							"state_sync: peer connection lost: {:?}. restart",
 							peer.info.addr,
 						);
@@ -318,7 +318,7 @@ impl StateSync {
 					< Utc::now()
 				{
 					// random abort test
-					info!("No PIBD-enabled max-difficulty peers for the past {} seconds - Aborting PIBD and falling back to TxHashset.zip download", pibd_params::TXHASHSET_ZIP_FALLBACK_TIME_SECS);
+					warn!("No PIBD-enabled max-difficulty peers for the past {} seconds - Aborting PIBD and falling back to TxHashset.zip download", pibd_params::TXHASHSET_ZIP_FALLBACK_TIME_SECS);
 					self.sync_state
 						.update_pibd_progress(true, true, 0, 1, &archive_header);
 					self.sync_state
@@ -359,7 +359,7 @@ impl StateSync {
 					),
 				};
 				if let Err(e) = res {
-					info!(
+					warn!(
 						"Error sending request to peer at {}, reason: {:?}",
 						p.info.addr, e
 					);

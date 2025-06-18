@@ -110,12 +110,12 @@ pub fn check_seeds(is_testnet: bool) -> Vec<SeedCheckResult> {
 	));
 
 	for s in default_seeds.iter() {
-		info!("Checking seed health for {}", s);
+		warn!("Checking seed health for {}", s);
 		let mut seed_result = SeedCheckResult::default();
 		seed_result.url = s.to_string();
 		let resolved_dns_entries = resolve_dns_to_addrs(&vec![format!("{}:{}", s, port)]);
 		if resolved_dns_entries.is_empty() {
-			info!("FAIL - No dns entries found for {}", s);
+			warn!("FAIL - No dns entries found for {}", s);
 			result.push(seed_result);
 			continue;
 		}
@@ -124,11 +124,11 @@ pub fn check_seeds(is_testnet: bool) -> Vec<SeedCheckResult> {
 		for r in resolved_dns_entries.iter().rev() {
 			let res = check_seed_health(*r, is_testnet, &peers);
 			if let Ok(p) = res {
-				info!(
+				warn!(
 					"SUCCESS - Performed Handshake with seed for {} at {}. {} - {:?}",
 					s, r, p.info.user_agent, p.info.capabilities
 				);
-				//info!("{:?}", p);
+				//warn!("{:?}", p);
 				seed_result.success = true;
 				seed_result
 					.successful_attempts
@@ -151,7 +151,7 @@ pub fn check_seeds(is_testnet: bool) -> Vec<SeedCheckResult> {
 		}
 
 		if !seed_result.success {
-			info!(
+			warn!(
 				"FAIL - Unable to handshake at any known DNS resolutions for {}",
 				s
 			);

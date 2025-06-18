@@ -166,7 +166,7 @@ fn process_expired_entries(
 	for entry in expired_entries {
 		let txhash = entry.tx.hash();
 		match tx_pool.add_to_pool(TxSource::EmbargoExpired, entry.tx, false, &header) {
-			Ok(_) => info!(
+			Ok(_) => warn!(
 				"dand_mon: embargo expired for {}, fluffed successfully.",
 				txhash
 			),

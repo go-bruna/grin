@@ -69,12 +69,12 @@ pub fn info_strings() -> (String, String) {
 
 fn log_build_info() {
 	let (basic_info, detailed_info) = info_strings();
-	info!("{}", basic_info);
+	warn!("{}", basic_info);
 	debug!("{}", detailed_info);
 }
 
 fn log_feature_flags() {
-	info!("Feature: NRD kernel enabled: {}", global::is_nrd_enabled());
+	warn!("Feature: NRD kernel enabled: {}", global::is_nrd_enabled());
 }
 
 fn main() {
@@ -148,12 +148,12 @@ fn real_main() -> i32 {
 	init_logger(Some(logging_config), logs_tx);
 
 	if let Some(file_path) = &config.config_file_path {
-		info!(
+		warn!(
 			"Using configuration file at {}",
 			file_path.to_str().unwrap()
 		);
 	} else {
-		info!("Node configuration file not found, using default");
+		warn!("Node configuration file not found, using default");
 	};
 
 	log_build_info();
@@ -161,7 +161,7 @@ fn real_main() -> i32 {
 	// Initialize our global chain_type, feature flags (NRD kernel support currently), accept_fee_base, and future_time_limit.
 	// These are read via global and not read from config beyond this point.
 	global::init_global_chain_type(config.members.as_ref().unwrap().server.chain_type);
-	info!("Chain: {:?}", global::get_chain_type());
+	warn!("Chain: {:?}", global::get_chain_type());
 	match global::get_chain_type() {
 		global::ChainTypes::Mainnet => {
 			// Set various mainnet specific feature flags.
@@ -180,9 +180,9 @@ fn real_main() -> i32 {
 		.pool_config
 		.accept_fee_base;
 	global::init_global_accept_fee_base(afb);
-	info!("Accept Fee Base: {:?}", global::get_accept_fee_base());
+	warn!("Accept Fee Base: {:?}", global::get_accept_fee_base());
 	global::init_global_future_time_limit(config.members.unwrap().server.future_time_limit);
-	info!("Future Time Limit: {:?}", global::get_future_time_limit());
+	warn!("Future Time Limit: {:?}", global::get_future_time_limit());
 	log_feature_flags();
 
 	// Execute subcommand

@@ -83,7 +83,7 @@ where
 	pub fn push_transaction(&self, tx: Transaction, fluff: Option<bool>) -> Result<(), Error> {
 		let pool_arc = w(&self.tx_pool)?;
 		let source = pool::TxSource::PushApi;
-		info!(
+		warn!(
 			"Pushing transaction {} to pool (inputs: {}, outputs: {}, kernels: {})",
 			tx.hash(),
 			tx.inputs().len(),
@@ -142,7 +142,7 @@ where
 			.map_err(|e| Error::RequestError(format!("Bad request: {}", e)))?;
 
 	let source = pool::TxSource::PushApi;
-	info!(
+	warn!(
 		"Pushing transaction {} to pool (inputs: {}, outputs: {}, kernels: {})",
 		tx.hash(),
 		tx.inputs().len(),

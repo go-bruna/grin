@@ -215,7 +215,7 @@ impl WebHook {
 	) -> WebHook {
 		let keep_alive = Duration::from_secs(timeout as u64);
 
-		info!(
+		warn!(
 			"Spawning {} threads for webhooks (timeout set to {} secs)",
 			nthreads, timeout
 		);

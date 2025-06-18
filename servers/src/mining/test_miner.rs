@@ -126,7 +126,7 @@ impl Miner {
 	/// Starts the mining loop, building a new block on top of the existing
 	/// chain anytime required and looking for PoW solution.
 	pub fn run_loop(&self, wallet_listener_url: Option<String>) {
-		info!(
+		warn!(
 			"(Server ID: {}) Starting test miner loop.",
 			self.debug_output_id
 		);
@@ -166,7 +166,7 @@ impl Miner {
 
 			// we found a solution, push our block through the chain processing pipeline
 			if sol {
-				info!(
+				warn!(
 					"(Server ID: {}) Found valid proof of work, adding block {} (prev_root {}).",
 					self.debug_output_id,
 					b.hash(),
@@ -190,6 +190,6 @@ impl Miner {
 			}
 		}
 
-		info!("(Server ID: {}) test miner exit.", self.debug_output_id);
+		warn!("(Server ID: {}) test miner exit.", self.debug_output_id);
 	}
 }

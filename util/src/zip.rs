@@ -24,16 +24,16 @@ use zip as zip_rs;
 // Sanitize file path for normal components, excluding '/', '..', and '.'
 // From private function in zip crate
 fn path_to_string(path: &std::path::Path) -> String {
-    let mut path_str = String::new();
-    for component in path.components() {
-        if let std::path::Component::Normal(os_str) = component {
-            if !path_str.is_empty() {
-                path_str.push('/');
-            }
-            path_str.push_str(&*os_str.to_string_lossy());
-        }
-    }
-    path_str
+	let mut path_str = String::new();
+	for component in path.components() {
+		if let std::path::Component::Normal(os_str) = component {
+			if !path_str.is_empty() {
+				path_str.push('/');
+			}
+			path_str.push_str(&*os_str.to_string_lossy());
+		}
+	}
+	path_str
 }
 
 /// Create a zip archive from source dir and list of relative file paths.
@@ -51,7 +51,7 @@ pub fn create_zip(dst_file: &File, src_dir: &Path, files: Vec<PathBuf>) -> io::R
 	for x in &files {
 		let file_path = src_dir.join(x);
 		if let Ok(file) = File::open(file_path.clone()) {
-			info!("compress: {:?} -> {:?}", file_path, x);
+			warn!("compress: {:?} -> {:?}", file_path, x);
 			writer.get_mut().start_file(path_to_string(x), options)?;
 			io::copy(&mut BufReader::new(file), &mut writer)?;
 			// Flush the BufWriter after each file so we start then next one correctly.
@@ -79,7 +79,7 @@ pub fn extract_files(from_archive: File, dest: &Path, files: Vec<PathBuf>) -> io
 				io::copy(&mut BufReader::new(file), &mut BufWriter::new(outfile))
 					.expect("write to file");
 
-				info!("extract_files: {:?} -> {:?}", x, path);
+				warn!("extract_files: {:?} -> {:?}", x, path);
 
 				// Set file permissions to "644" (Unix only).
 				#[cfg(unix)]

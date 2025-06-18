@@ -142,7 +142,7 @@ impl HeaderSync {
 								{
 									error!("failed to ban peer {}: {:?}", peer.info.addr, e);
 								}
-								info!(
+								warn!(
 										"sync: ban a fraud peer: {}, claimed height: {}, total difficulty: {}",
 										peer.info.addr,
 										peer.info.height(),

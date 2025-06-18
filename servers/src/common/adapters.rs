@@ -309,7 +309,7 @@ where
 		bhs: &[core::BlockHeader],
 		peer_info: &PeerInfo,
 	) -> Result<bool, chain::Error> {
-		info!(
+		warn!(
 			"Received {} block headers from {}",
 			bhs.len(),
 			peer_info.addr
@@ -480,7 +480,7 @@ where
 						"bad txhashset data".to_string(),
 					));
 				} else {
-					info!("Received valid txhashset data for {}.", h);
+					warn!("Received valid txhashset data for {}.", h);
 				}
 				Ok(is_bad_data)
 			}
@@ -1058,7 +1058,7 @@ impl pool::PoolAdapter for PoolToNetAdapter {
 			if let Some(peer) = epoch.relay_peer(&self.peers()) {
 				match peer.send_stem_transaction(&entry.tx) {
 					Ok(_) => {
-						info!("Stemming this epoch, relaying to next peer.");
+						warn!("Stemming this epoch, relaying to next peer.");
 						Ok(())
 					}
 					Err(e) => {
@@ -1071,7 +1071,7 @@ impl pool::PoolAdapter for PoolToNetAdapter {
 				Err(pool::PoolError::DandelionError)
 			}
 		} else {
-			info!("Fluff epoch. Aggregating stem tx(s). Will fluff via Dandelion monitor.");
+			warn!("Fluff epoch. Aggregating stem tx(s). Will fluff via Dandelion monitor.");
 			Ok(())
 		}
 	}

@@ -266,7 +266,7 @@ impl ApiServer {
 			let m = oneshot::channel::<()>();
 			let tx = std::mem::replace(tx, m.0);
 			tx.send(()).expect("Failed to stop API server");
-			info!("API server has been stopped");
+			warn!("API server has been stopped");
 			true
 		} else {
 			error!("Can't stop API server, it's not running or doesn't spport stop operation");

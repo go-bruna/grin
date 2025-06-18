@@ -362,7 +362,7 @@ impl DandelionEpoch {
 		self.is_stem = rng.gen_range(0, 100) < stem_probability;
 
 		let addr = self.relay_peer.clone().map(|p| p.info.addr);
-		info!(
+		warn!(
 			"DandelionEpoch: next_epoch: is_stem: {} ({}%), relay: {:?}",
 			self.is_stem, stem_probability, addr
 		);
@@ -384,7 +384,7 @@ impl DandelionEpoch {
 		let mut update_relay = false;
 		if let Some(peer) = &self.relay_peer {
 			if !peer.is_connected() {
-				info!(
+				warn!(
 					"DandelionEpoch: relay_peer: {:?} not connected, choosing a new one.",
 					peer.info.addr
 				);
@@ -396,7 +396,7 @@ impl DandelionEpoch {
 
 		if update_relay {
 			self.relay_peer = peers.iter().outbound().connected().choose_random();
-			info!(
+			warn!(
 				"DandelionEpoch: relay_peer: new peer chosen: {:?}",
 				self.relay_peer.clone().map(|p| p.info.addr)
 			);

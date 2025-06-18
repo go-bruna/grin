@@ -1439,7 +1439,8 @@ impl Chain {
 			0
 		} else {
 			self.get_header_by_height(start_block_height - 1)?
-				.output_mmr_size + 1
+				.output_mmr_size
+				+ 1
 		};
 		let end_mmr_size = self.get_header_by_height(end_block_height)?.output_mmr_size;
 		Ok((start_mmr_size, end_mmr_size))
@@ -1838,7 +1839,7 @@ fn setup_head(
 			// Save the block_sums to the db for use later.
 			batch.save_block_sums(&genesis.hash(), sums)?;
 
-			info!("init: saved genesis: {:?}", genesis.hash());
+			warn!("init: saved genesis: {:?}", genesis.hash());
 		}
 		Err(e) => return Err(Error::StoreErr(e, "chain init load head".to_owned())),
 	};

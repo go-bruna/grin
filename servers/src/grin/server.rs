@@ -191,7 +191,7 @@ impl Server {
 			global::ChainTypes::Mainnet => genesis::genesis_main(),
 		};
 
-		info!("Starting server, genesis block: {}", genesis.hash());
+		warn!("Starting server, genesis block: {}", genesis.hash());
 
 		let shared_chain = Arc::new(chain::Chain::init(
 			config.db_root.clone(),
@@ -283,7 +283,7 @@ impl Server {
 				}
 			})?;
 
-		info!("Starting rest apis at: {}", &config.api_http_addr);
+		warn!("Starting rest apis at: {}", &config.api_http_addr);
 		let api_secret = get_first_line(config.api_secret_path.clone());
 		let foreign_api_secret = get_first_line(config.foreign_api_secret_path.clone());
 		let tls_conf = match config.tls_certificate_file.clone() {
@@ -313,7 +313,7 @@ impl Server {
 			stop_state.clone(),
 		)?;
 
-		info!("Starting dandelion monitor: {}", &config.api_http_addr);
+		warn!("Starting dandelion monitor: {}", &config.api_http_addr);
 		let dandelion_thread = dandelion_monitor::monitor_transactions(
 			config.dandelion_config.clone(),
 			tx_pool.clone(),
@@ -390,7 +390,7 @@ impl Server {
 		wallet_listener_url: Option<String>,
 		stop_state: Arc<StopState>,
 	) {
-		info!("start_test_miner - start",);
+		warn!("start_test_miner - start",);
 		let sync_state = self.sync_state.clone();
 		let config_wallet_url = match wallet_listener_url.clone() {
 			Some(u) => u,
@@ -558,20 +558,20 @@ impl Server {
 			if let Some(connect_thread) = self.connect_thread {
 				match connect_thread.join() {
 					Err(e) => error!("failed to join to connect_and_monitor thread: {:?}", e),
-					Ok(_) => info!("connect_and_monitor thread stopped"),
+					Ok(_) => warn!("connect_and_monitor thread stopped"),
 				}
 			} else {
-				info!("No active connect_and_monitor thread")
+				warn!("No active connect_and_monitor thread")
 			}
 
 			match self.sync_thread.join() {
 				Err(e) => error!("failed to join to sync thread: {:?}", e),
-				Ok(_) => info!("sync thread stopped"),
+				Ok(_) => warn!("sync thread stopped"),
 			}
 
 			match self.dandelion_thread.join() {
 				Err(e) => error!("failed to join to dandelion_monitor thread: {:?}", e),
-				Ok(_) => info!("dandelion_monitor thread stopped"),
+				Ok(_) => warn!("dandelion_monitor thread stopped"),
 			}
 		}
 		// this call is blocking and makes sure all peers stop, however
@@ -597,6 +597,6 @@ impl Server {
 	/// Stops the test miner without stopping the p2p layer
 	pub fn stop_test_miner(&self, stop: Arc<StopState>) {
 		stop.stop();
-		info!("stop_test_miner - stop",);
+		warn!("stop_test_miner - stop",);
 	}
 }

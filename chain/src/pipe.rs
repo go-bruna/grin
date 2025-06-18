@@ -434,7 +434,7 @@ fn validate_header(header: &BlockHeader, ctx: &mut BlockContext<'_>) -> Result<(
 		let diff_iter = store::DifficultyIter::from_batch(prev.hash(), child_batch);
 		let next_header_info = consensus::next_difficulty(header.height, diff_iter);
 		if target_difficulty != next_header_info.difficulty {
-			info!(
+			warn!(
 				"validate_header: header target difficulty {} != {}",
 				target_difficulty.to_num(),
 				next_header_info.difficulty.to_num()
@@ -445,7 +445,7 @@ fn validate_header(header: &BlockHeader, ctx: &mut BlockContext<'_>) -> Result<(
 		if header.version < HeaderVersion(5)
 			&& header.pow.secondary_scaling != next_header_info.secondary_scaling
 		{
-			info!(
+			warn!(
 				"validate_header: header secondary scaling {} != {}",
 				header.pow.secondary_scaling, next_header_info.secondary_scaling
 			);

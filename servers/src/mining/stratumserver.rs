@@ -389,16 +389,6 @@ impl Handler {
 		b.header.pow.nonce = params.nonce;
 		b.header.pow.proof.nonces = params.pow;
 
-		info!(
-			"(Server ID: {}) Got share at height {}, hash {}, edge_bits {}, nonce {}, job_id {} ",
-			self.id,
-			b.header.height,
-			b.hash(),
-			b.header.pow.proof.edge_bits,
-			b.header.pow.nonce,
-			params.job_id,
-		);
-
 		if !b.header.pow.is_primary() && !b.header.pow.is_secondary() {
 			// Return error status
 			error!(
@@ -489,7 +479,7 @@ impl Handler {
 			Some(login) => login,
 		};
 
-		info!(
+		debug!(
 				"(Server ID: {}) Got share at height {}, hash {}, edge_bits {}, nonce {}, job_id {}, difficulty {}/{}, submitted by {}",
 				self.id,
 				b.header.height,
@@ -610,7 +600,7 @@ impl Handler {
 // ----------------------------------------
 // Worker Factory Thread Function
 fn accept_connections(listen_addr: SocketAddr, handler: Arc<Handler>) {
-	info!("Start tokio stratum server");
+	warn!("Start tokio stratum server");
 	let task = async move {
 		let listener = TcpListener::bind(&listen_addr).await.unwrap_or_else(|_| {
 			panic!("Stratum: Failed to bind to listen address {}", listen_addr)
@@ -633,7 +623,7 @@ fn accept_connections(listen_addr: SocketAddr, handler: Arc<Handler>) {
 				let (tx, mut rx) = mpsc::unbounded();
 
 				let worker_id = handler.workers.add_worker(tx);
-				info!("Worker {} connected", worker_id);
+				warn!("Worker {} connected", worker_id);
 
 				let framed = Framed::new(socket, LinesCodec::new());
 				let (mut writer, mut reader) = framed.split();
@@ -669,7 +659,7 @@ fn accept_connections(listen_addr: SocketAddr, handler: Arc<Handler>) {
 					pin_mut!(read, write);
 					futures::future::select(read, write).await;
 					handler.workers.remove_worker(worker_id);
-					info!("Worker {} disconnected", worker_id);
+					warn!("Worker {} disconnected", worker_id);
 				};
 				tokio::spawn(task);
 			}
@@ -870,7 +860,7 @@ impl StratumServer {
 	/// stratum miner, proxy, or pool, and accepts full solutions to
 	/// be submitted.
 	pub fn run_loop(&mut self, proof_size: usize, sync_state: Arc<SyncState>) {
-		info!(
+		warn!(
 			"(Server ID: {}) Starting stratum server with proof_size = {}",
 			self.id, proof_size
 		);
