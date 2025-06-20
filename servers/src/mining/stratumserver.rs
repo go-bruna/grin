@@ -361,8 +361,12 @@ impl Handler {
 		params: Option<Value>,
 		worker_id: usize,
 	) -> Result<(Value, bool), RpcError> {
+		warn!("begin handle_submit",);
+
 		// Validate parameters
 		let params: SubmitParams = parse_params(params)?;
+
+		warn!("after parse_params",);
 
 		let state = self.current_state.read();
 		// Find the correct version of the block to match this header
@@ -370,6 +374,7 @@ impl Handler {
 		if params.height != state.current_block_versions.last().unwrap().header.height
 			|| b.is_none()
 		{
+			warn!("before height error",);
 			// Return error status
 			error!(
 					"(Server ID: {}) Share at height {}, edge_bits {}, nonce {}, job_id {} submitted too late",
@@ -389,7 +394,9 @@ impl Handler {
 		b.header.pow.nonce = params.nonce;
 		b.header.pow.proof.nonces = params.pow;
 
+		warn!("before is_primary",);
 		if !b.header.pow.is_primary() && !b.header.pow.is_secondary() {
+			warn!("before is_primary error",);
 			// Return error status
 			error!(
 					"(Server ID: {}) Failed to validate solution at height {}, hash {}, edge_bits {}, nonce {}, job_id {}: cuckoo size too small",
@@ -403,10 +410,14 @@ impl Handler {
 		// Get share difficulty values
 		scaled_share_difficulty = b.header.pow.to_difficulty(b.header.height).to_num();
 		unscaled_share_difficulty = b.header.pow.to_unscaled_difficulty().to_num();
+
+		warn!("before unscaled_share_difficulty",);
+
 		// Note:  state.minimum_share_difficulty is unscaled
 		//        state.current_difficulty is scaled
 		// If the difficulty is too low its an error
 		if unscaled_share_difficulty < state.minimum_share_difficulty {
+			warn!("before unscaled_share_difficulty error",);
 			// Return error status
 			error!(
 					"(Server ID: {}) Share at height {}, hash {}, edge_bits {}, nonce {}, job_id {} rejected due to low difficulty: {}/{}",
@@ -417,11 +428,17 @@ impl Handler {
 			return Err(RpcError::too_low_difficulty());
 		}
 
+		warn!(
+			"before scaled_share_difficulty, scaled_share_difficulty: {}, state.current_difficulty: {}", scaled_share_difficulty, state.current_difficulty,
+		);
+
 		// If the difficulty is high enough, submit it (which also validates it)
 		if scaled_share_difficulty >= state.current_difficulty {
+			warn!("before process_block",);
 			// This is a full solution, submit it to the network
 			let res = self.chain.process_block(b.clone(), chain::Options::MINE);
 			if let Err(e) = res {
+				warn!("before process_block error",);
 				// Return error status
 				error!(
 						"(Server ID: {}) Failed to validate solution at height {}, hash {}, edge_bits {}, nonce {}, job_id {}, {}",
@@ -437,10 +454,12 @@ impl Handler {
 					.update_stats(worker_id, |worker_stats| worker_stats.num_rejected += 1);
 				return Err(RpcError::cannot_validate());
 			}
+			warn!("after process_block, share_is_block=true",);
 			share_is_block = true;
 			self.workers
 				.update_stats(worker_id, |worker_stats| worker_stats.num_blocks_found += 1);
 			self.workers.stratum_stats.write().blocks_found += 1;
+			warn!("after update_stats",);
 			// Log message to make it obvious we found a block
 			let stats = self.workers.get_stats(worker_id)?;
 			warn!(
@@ -455,6 +474,7 @@ impl Handler {
 			// Do some validation but dont submit
 			let res = pow::verify_size(&b.header);
 			if res.is_err() {
+				warn!("before res.is_err(), scaled_share_difficulty < state.current_difficulty",);
 				// Return error status
 				error!(
 						"(Server ID: {}) Failed to validate share at height {}, hash {}, edge_bits {}, nonce {}, job_id {}. {:?}",
@@ -471,6 +491,9 @@ impl Handler {
 				return Err(RpcError::cannot_validate());
 			}
 		}
+
+		warn!("before update_edge_bits",);
+
 		// Log this as a valid share
 		self.workers.update_edge_bits(params.edge_bits as u16);
 		let worker = self.workers.get_worker(worker_id)?;
