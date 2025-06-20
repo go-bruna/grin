@@ -182,7 +182,7 @@ pub fn genesis_main() -> core::Block {
 		kernel_mmr_size: 1,
 		pow: ProofOfWork {
 			total_difficulty: Difficulty::from_num(10_u64.pow(3)),
-			secondary_scaling: 1856,
+			secondary_scaling: 1,
 			nonce: 0,
 			proof: Proof {
 				nonces: vec![
