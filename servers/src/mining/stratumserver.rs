@@ -193,7 +193,7 @@ impl State {
 		State {
 			current_block_versions: blocks,
 			current_key_id: None,
-			current_difficulty: <u64>::max_value(),
+			current_difficulty: minimum_share_difficulty,
 			minimum_share_difficulty: minimum_share_difficulty,
 		}
 	}

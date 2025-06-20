@@ -181,9 +181,9 @@ pub fn genesis_main() -> core::Block {
 		output_mmr_size: 1,
 		kernel_mmr_size: 1,
 		pow: ProofOfWork {
-			total_difficulty: Difficulty::from_num(2_u64.pow(34)),
-			secondary_scaling: 1856,
-			nonce: 41,
+			total_difficulty: Difficulty::from_num(10_u64.pow(4)),
+			secondary_scaling: 1,
+			nonce: 0,
 			proof: Proof {
 				nonces: vec![
 					4391451__, 36730677_, 38198400_, 38797304_, 60700446_, 72910191_, 73050441_,
