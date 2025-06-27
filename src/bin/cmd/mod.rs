@@ -14,6 +14,7 @@
 
 mod client;
 mod config;
+mod i2p_cli;
 mod server;
 
 pub use self::client::client_command;

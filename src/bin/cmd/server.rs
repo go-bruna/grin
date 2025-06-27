@@ -21,6 +21,7 @@ use std::time::Duration;
 
 use clap::ArgMatches;
 
+use crate::cmd::i2p_cli::start_i2p_router;
 use crate::config::GlobalConfig;
 use crate::p2p::Seeding;
 use crate::servers;
@@ -37,7 +38,14 @@ pub fn start_server(
 	logs_rx: Option<mpsc::Receiver<LogEntry>>,
 	api_chan: &'static mut (oneshot::Sender<()>, oneshot::Receiver<()>),
 ) {
+	// start i2p router here
+	if let Err(e) = start_i2p_router() {
+		println!("Error starting i2p router: {}", e);
+		exit(1);
+	}
+	// start grin server here
 	start_server_tui(config, logs_rx, api_chan);
+
 	exit(0);
 }
 

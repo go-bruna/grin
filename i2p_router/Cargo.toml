@@ -1,0 +1,51 @@
+[package]
+name = "i2p_router"
+version = "0.2.0"
+workspace = '..'
+edition = "2018"
+
+[dependencies]
+axum = { version = "0.8.4", default-features = false, features = ["ws", "macros", "tokio", "http1"], optional = true }
+clap = { version = "4.5.40", features = ["derive"] }
+futures = "0.3.31"
+home = "=0.5.11"
+httparse = "1.10.1"
+iced = { version = "0.13.1", features = ["advanced", "tokio"], optional = true }
+igd-next = { version = "0.16.1", default-features = false, features = ["aio_tokio"] }
+natpmp = "0.5.0"
+netdev = { version = "0.35.2", default-features = false, features = ["gateway"] }
+schnellru = "0.2.4"
+serde_json = { version = "1.0.140", optional = true }
+serde = { version = "1.0.219", features = ["derive"] }
+thiserror = "2.0.12"
+tokio-tungstenite = { version = "0.27.0", default-features = false, features = ["native-tls"], optional = true }
+toml = "0.8.23"
+url = "2.5.4"
+
+
+# workspace dependencies
+anyhow.workspace = true
+ed25519-dalek = { workspace = true, features = ["rand_core", "fast"] }
+flate2 = { workspace = true }
+parking_lot = { workspace = true }
+rand_core = { workspace = true }
+rand = { workspace = true }
+reqwest = { workspace = true }
+tokio-util = { workspace = true }
+tokio = { workspace = true }
+tracing-subscriber = { workspace = true }
+tracing = { workspace = true, features = ["log"] }
+x25519-dalek = { workspace = true, features = ["getrandom", "static_secrets", "precomputed-tables"] }
+yosemite = { workspace = true }
+emissary-util.workspace = true
+emissary-core.workspace = true
+
+
+[dev-dependencies]
+tempfile = { workspace = true }
+
+[features]
+default = ["web-ui"]
+web-ui = ["axum", "serde_json", "tokio-tungstenite"]
+
+

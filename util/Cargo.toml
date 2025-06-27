@@ -10,7 +10,7 @@ workspace = ".."
 edition = "2018"
 
 [dependencies]
-anyhow = "1.0"
+anyhow = { workspace = true }
 backtrace = "0.3"
 base64 = "0.12"
 byteorder = "1"
