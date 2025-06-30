@@ -37,7 +37,7 @@ pub fn start_i2p_router() -> anyhow::Result<()> {
 			.run()
 			.await;
 	});
-	runtime.block_on(router_event_loop(router, port_mapper, shutdown_rx));
+	// runtime.block_on(router_event_loop(router, port_mapper, shutdown_rx));
 
 	Ok(())
 }

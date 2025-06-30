@@ -80,8 +80,9 @@ pub struct RouterContext {
 
 /// Setup router and related subsystems.
 pub async fn setup_router() -> anyhow::Result<RouterContext> {
+	println!("setup_router_1");
 	let arguments = Arguments::parse();
-
+	println!("setup_router_2");
 	// initialize logger with any logging directive given as a cli argument
 	let handle = init_logger!(arguments.log.clone());
 

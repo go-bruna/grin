@@ -156,6 +156,7 @@ pub struct RouterUiOptions {
 
 #[derive(Parser)]
 #[command(version, about)]
+#[command(ignore_errors = true)]
 pub struct Arguments {
 	/// Base path where all i2p-related files are stored
 	///   
